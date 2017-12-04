@@ -1,3 +1,4 @@
+# http://www.geeksforgeeks.org/given-a-linked-list-which-is-sorted-how-will-you-insert-in-sorted-way/
 class Node():
     def __init__(self, data):
         self.data = data
