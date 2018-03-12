@@ -1,6 +1,5 @@
 class ContractorFraudDetection():
     def __init__(self, inputDir):
-        # with open('fraudDetect\PalantirContractorFraudDetection\input.txt', 'r') as f:
         with open(inputDir, 'r') as f:
             self.data = f.readlines()
 
