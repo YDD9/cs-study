@@ -1,0 +1,103 @@
+https://www.hackerrank.com/contests/amex-internal-only/challenges/fraud-detection/problem
+ Practice
+ Compete
+ Jobs
+ Leaderboard
+  youdangde
+Search
+All Contests  amex-internal-only  Fraud Detection
+Fraud Detection locked
+by shashank21j
+Problem
+Submissions
+Leaderboard
+Discussions
+American Express aims to build best in class models to detect the cases of fraudulent transaction and identity theft of its card members. Preventing fraud not only has a large financial impact but also helps in restoring the card member’s trust in the organization. Large fraud events can not only hamper consumer confidence in the company but also lead to negative brand publicity.
+
+In order to detect fraud, American Express uses advanced models and pattern detection in the data. The data sample includes a set of card transactions. Follow the simple steps to get a flavor of catching fraudsters. We have added a Fraud flag at the end to identify the transactions that actually were fraudulent.
+
+Problem Statement
+Query #1: Before one starts looking at models and patterns, all transactions from a single customer must be aggregated. Can you create a list of unique customer IDs?
+
+Query #2: Customers making repeat purchases at the same merchant can be an indicator of fraud risk. Identify all those customers who transacted at a given merchant more than 5 times.
+
+Query #3: A fraud model scores each transaction and rank orders the likelihood of each one being a fraudulent one. Find unique customer id's who have at least one transaction scored higher than the median score across all transactions.
+
+Query #4: Transactions made by a card member in different countries have higher likelihood of being fraudulent. Find all unique customers who transacted in more than one country.
+
+Query #5: You can assess the total saving opportunity by adding up dollar value of all the transactions that were actually fraudulent. Find the total amount of all the fraudulent transactions made by each customer.
+
+Each transaction has the below mentioned fields.
+
+Score - A given score for each transaction, Format - Integer
+
+Sample Value: 2,4.
+
+Transaction date - Date of transaction, Format - ddMMMyyyy
+
+Sample Value: 23APR2014.
+
+Fraud indicator - A 0/1 flag to indicate fraud transaction, where 1 means fraud. Format - Integer
+
+Sample Value: 0,1
+
+Country - Name of the country where transaction was performed, Format - String
+
+Sample Value: Mexico
+
+Transaction Amount - Dollar amount of transaction. Format - Integer
+
+Sample Value: 4,7
+
+Customer Id - Unique customer identifier. Format - Integer
+
+Sample Value: 100003
+
+Merchant Id - Unique id of the merchant on which transaction was performed, Format - Integer
+
+Sample Value: 9873651073
+
+Input Format
+First line contains Case No.  each corresponding to the 5 scenarios given above.
+Second line contains , i.e. Number of lines given in input.
+ lines follow where each line has comma separated values given as
+Score, Transaction date, Fraud Indicator, Country, Transaction Amount, Customer Id, Merchant Id.
+
+Output Format
+Depending on the test case scenarios you have to print the result in sorted order. E.g. if you are asked to print unique customer ids, print them each in a new line in a sorted order based on the integer value.
+
+Constraints
+
+Sample Input
+
+1
+5
+847,25APR2014,0,USA,4,284040,1314940027
+811,21APR2014,0,USA,1,3004100,2207974205
+826,10APR2014,0,USA,7,3004100,1355124023
+669,23APR2014,0,USA,29,3604454,6313685265
+830,14APR2014,0,USA,11,4104402,1051467102
+Sample Output
+
+284040
+3004100
+3604454
+4104402
+Submissions: 0
+Max Score: 100
+Difficulty: Hard
+Rate This Challenge:
+
+
+More
+
+
+
+1
+cat
+Line: 1 Col: 1
+Run Code  Submit Code Upload Code as File
+Test against custom input
+Contest Calendar | Interview Prep | Blog | Scoring | Environment | FAQ | About Us | Support | Careers | Terms Of Service | Privacy Policy | Request a Feature
+
+

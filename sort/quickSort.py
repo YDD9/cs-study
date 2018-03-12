@@ -30,7 +30,8 @@ def partition(arr, l, r):
     return arr
 
 
-arr = [4,2,3,1,5,9,0]
+# arr = [4,2,3,1,5,9,0]
+arr = [5,2,4,3,6]
 r = len(arr) - 1
 # print partition(arr, 0, r)
 print quickSort(arr)
