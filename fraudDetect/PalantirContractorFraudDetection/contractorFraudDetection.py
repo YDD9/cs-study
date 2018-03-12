@@ -38,7 +38,7 @@ class ContractorFraudDetection():
                         # submitted invoice_id is smaller than his allowed limit
                         if records[contractor_id][0] > invoice_id:
                             print('{};{};SUSPICIOUS_BATCH'.format(lineNb+1, contractor_id))
-                            # at least one violation in batch, fraud contractor is found
+                            # at least one violation in batch, suspicious contractor is found
                             break
 
 if __name__=='__main__':
