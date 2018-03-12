@@ -4,9 +4,10 @@ class ContractorFraudDetection():
             self.data = f.readlines()
 
     def printFraud(self):
-        # set initially invoice_limit -inf to accept all invoice_id
-        # once a bigger invoice_id submitted(no matter fraud or not), assign it to invoice_limit
-        # from then any newly start contractor must submit bigger invoice_id than invoice_limit
+        # set initially invoice_limit -inf to accept all invoice_id.
+        # once a bigger invoice_id submitted(no matter fraud or not), assign it to invoice_limit.
+        # from then any newly start contractor should submit bigger invoice_id than invoice_limit;
+        # othwerwise fraud or suspicious
         records = dict(invoice_limit=-float('inf'))
         # records stores contractor_id(key);
         # stores contractor's invoice_limit and last START line number together in a list(value)
