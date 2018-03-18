@@ -1,4 +1,6 @@
 class ContractorFraudDetection():
+    # def __init__(self):
+    #     self.n_data = int(raw_input())
     def __init__(self, inputDir):
         with open(inputDir, 'r') as f:
             self.data = f.readlines()
@@ -12,6 +14,9 @@ class ContractorFraudDetection():
         # records stores contractor_id(key);
         # stores contractor's invoice_limit and last START line number together in a list(value)
 
+        # lineNb = 0
+        # for line in range(self.n_data):
+        #     line = raw_input()
         for lineNb, line in enumerate(self.data):
             line = line.replace('\n','')
             contractor_id = line.rsplit(';')[0]
@@ -40,8 +45,10 @@ class ContractorFraudDetection():
                             print('{};{};SUSPICIOUS_BATCH'.format(lineNb+1, contractor_id))
                             # at least one violation in batch, suspicious contractor is found
                             break
+            # lineNb += 1
 
 if __name__=='__main__':
+    # detect = ContractorFraudDetection()
     detect = ContractorFraudDetection('fraudDetect\PalantirContractorFraudDetection\input.txt')
     detect.printFraud()
-    print('Detection finished.')
+    print('Detection finished by Imp1.')
