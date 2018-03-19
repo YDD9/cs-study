@@ -1,10 +1,11 @@
 # http://interviewcat.com/2015/05/05/post-1-python-graphs-and-searching/
 # https://pymotw.com/2/resource/
+# https://stackoverflow.com/questions/45623722/marking-node-as-visited-on-bfs-when-dequeuing
+# https://codefights.com/interview-practice/topics/dfs-bfs/tutorial
 import sys
-import json
 from collections import deque
 from time import time
-# import resource
+import resource
 
 class State():
     def __init__(self, root):
@@ -80,8 +81,6 @@ def bfs(initState, goalState='012345678'):
         visited.add(cur)
         if cur == goalState:
             res = bfsPath(prev, initState, goalState)
-            with open('./prev.json', 'w') as f:
-                json.dump(prev, f)
             # moves   , depth of goal,    , max depth ,   node expanded
             return res, prev[res[-1]][2], bfsMaxSearchDepth(q, prev), len(visited)-1
         # neighbors = (State(cur).data)[cur].values()
@@ -112,13 +111,13 @@ def bfsMaxSearchDepth(q, prev):
     sorted(prev.values(), key=lambda l: l[2])
 
 if __name__=='__main__':
-    # method = sys.argv[1]
-    # initState = sys.argv[2]
-    # initState = initState.replace(',','')
-	# usage = resource.getrusage(resource.RUSAGE_SELF)
-    method = 'bfs'
-    initState = '125340678'
-    # initState = '6,1,8,4,0,2,7,3,5'.replace(',', '')
+    method = sys.argv[1]
+    initState = sys.argv[2]
+    initState = initState.replace(',','')
+    usage = resource.getrusage(resource.RUSAGE_SELF)
+
+    # method = 'bfs'
+    # initState = '125340678'
     # print method
     # print initState
 
@@ -130,7 +129,7 @@ if __name__=='__main__':
         res, search_depth, max_search_depth, nodes_expanded = bfs(initState)
         stop = time()
         running_time = stop - start
-        # max_ram_usage = getattr(usage, 'ru_maxrss')
+        max_ram_usage = getattr(usage, 'ru_maxrss')
         print('path_to_goal {}'.format(res))
         print('search_depth {}'.format(search_depth))
         print('nodes_expanded {}'.format(nodes_expanded))
@@ -150,7 +149,8 @@ if __name__=='__main__':
     cost_of_path = len(res) - 1
     path_to_goal = [res[i][1] for i in range(cost_of_path)]
 
-    s = 'path_to_goal: {}\ncost_of_path: {}\nnodes_expanded: {}\nsearch_depth: {}\nmax_search_depth: {}\nrunning_time: {}\nmax_ram_usage: {}\n'.format(path_to_goal,cost_of_path,nodes_expanded,search_depth,max_search_depth,running_time,0)
+
+    s = 'path_to_goal: {}\ncost_of_path: {}\nnodes_expanded: {}\nsearch_depth: {}\nmax_search_depth: {}\nrunning_time: {}\nmax_ram_usage: {}\n'.format(path_to_goal,cost_of_path,nodes_expanded,search_depth,max_search_depth,running_time,max_ram_usage)
 
     with open('output.txt', 'w') as f:
         f.write(s)
