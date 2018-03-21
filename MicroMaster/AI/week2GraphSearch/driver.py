@@ -8,12 +8,10 @@ from time import time
 
 class State():
     def __init__(self, root):
-        # root = '123045678'
-        # {'125340678': \
-        # {'R': '125346078', 'U': '120345678', 'D': '125348670', 'L': '125304678'}}
-        # {'125346078', '120345678', '125348670', '125304678'}}
+        # root = '125304678'
+        # {'125304678': \
+        # ['105324678', '125374608', '125034678', '125340678']}
         self.root = root
-        # self.data = {root:dict()}
         self.data = {root:deque()}
         self.updateChildren()
 
@@ -74,16 +72,18 @@ def bfs(initState, goalState='012345678'):
                 1:'Down',
                 2:'Left',
                 3:'Right'}
+    max_search_depth = 0
     while q:
         # dequeue
         cur = q.popleft()
         visited.add(cur)
         if cur == goalState:
-            res = bfsPath(prev, initState, goalState)
+            res = goalPath(prev, initState, goalState)
             with open('./prev.json', 'w') as f:
                 json.dump(prev, f)
             # moves   , depth of goal,    , max depth ,   node expanded
-            return res, prev[res[-1]][2], bfsMaxSearchDepth(q, prev), len(visited)-1
+            # return res, prev[res[-1]][2], bfsMaxSearchDepth(q, prev), len(visited)-1
+            return res, prev[res[-1]][2], max_search_depth, len(visited)-1
         # neighbors = (State(cur).data)[cur].values()
         neighbors = (State(cur).data)[cur]
         for move, node in enumerate(neighbors):
@@ -92,9 +92,10 @@ def bfs(initState, goalState='012345678'):
                 q.extend([node])
                 # update prev info
                 prev[node] = [cur, moveMap[move], prev[cur][2]+1]
+                max_search_depth = max(max_search_depth, prev[cur][2]+1)
     return -1
 
-def bfsPath(prev, initState, goalState):
+def goalPath(prev, initState, goalState):
     res = deque([goalState])
     cur = goalState
     while cur != initState:
@@ -109,19 +110,45 @@ def bfsMaxSearchDepth(q, prev):
     else:
         return prev[goalState][2]
 
-    sorted(prev.values(), key=lambda l: l[2])
+def dfs(initState, goalState='012345678'):
+    stack = deque([initState])
+    visited = set()
+    # initalState depth 0
+    prev = {initState:[None, None, 0]}  # stores {node: [prev_node, move, depth]}
+    moveMap = {0:'Up',
+                1:'Down',
+                2:'Left',
+                3:'Right'}
+    max_search_depth = 0
+    while stack:
+        cur = stack.pop()
+        visited.add(cur)
+        if cur==goalState:
+            res = goalPath(prev, initState, goalState)
+            with open('./prev.json', 'w') as f:
+                json.dump(prev, f)
+            return res, prev[res[-1]][2], max_search_depth, len(visited)-1
+        neighbors = (State(cur).data)[cur]
+        for move, node in enumerate(neighbors):
+            if node and node not in visited and node not in stack:
+                stack.append(node)
+                prev[node]=[cur, moveMap[move], prev[cur][2]+1]
+                max_search_depth = max(max_search_depth, prev[cur][2]+1)
+
 
 if __name__=='__main__':
     # method = sys.argv[1]
     # initState = sys.argv[2]
     # initState = initState.replace(',','')
 	# usage = resource.getrusage(resource.RUSAGE_SELF)
-    method = 'bfs'
-    initState = '125340678'
+    # method = 'bfs'
+    # initState = '125340678'
     # initState = '6,1,8,4,0,2,7,3,5'.replace(',', '')
     # print method
     # print initState
 
+    method = 'dfs'
+    initState = '1,2,5,3,4,0,6,7,8'.replace(',', '')
 
     start = time()
     fullState = State(initState)
@@ -134,6 +161,11 @@ if __name__=='__main__':
         print('path_to_goal {}'.format(res))
         print('search_depth {}'.format(search_depth))
         print('nodes_expanded {}'.format(nodes_expanded))
+    if method == 'dfs':
+        res, search_depth, max_search_depth, nodes_expanded = dfs(initState)
+        stop = time()
+        running_time = stop - start
+        print('path_to_goal {}'.format(res))
 
 
 # path_to_goal: the sequence of moves taken to reach the goal
