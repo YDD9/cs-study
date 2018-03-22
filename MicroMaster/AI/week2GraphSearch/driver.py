@@ -115,6 +115,8 @@ def dfs(initState, goalState='012345678'):
     visited = set()
     # initalState depth 0
     prev = {initState:[None, None, 0]}  # stores {node: [prev_node, move, depth]}
+    # Depth-First Search. Push onto the stack in reverse-UDLR order;
+    # popping off results in UDLR order.
     moveMap = {0:'Up',
                 1:'Down',
                 2:'Left',
@@ -129,12 +131,13 @@ def dfs(initState, goalState='012345678'):
                 json.dump(prev, f)
             return res, prev[res[-1]][2], max_search_depth, len(visited)-1
         neighbors = (State(cur).data)[cur]
-        for move, node in enumerate(neighbors):
+        for move, node in reversed(list(enumerate(neighbors))):
             if node and node not in visited and node not in stack:
                 stack.append(node)
                 prev[node]=[cur, moveMap[move], prev[cur][2]+1]
                 max_search_depth = max(max_search_depth, prev[cur][2]+1)
 
+    retrun -1
 
 if __name__=='__main__':
     # method = sys.argv[1]
