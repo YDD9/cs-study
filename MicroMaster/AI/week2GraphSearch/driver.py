@@ -1,9 +1,11 @@
 # http://interviewcat.com/2015/05/05/post-1-python-graphs-and-searching/
 # https://pymotw.com/2/resource/
+# https://www.redblobgames.com/pathfinding/a-star/implementation.html
 import sys
 import json
 from collections import deque
 from time import time
+import heapq
 # import resource
 
 class State():
@@ -139,19 +141,67 @@ def dfs(initState, goalState='012345678'):
 
     retrun -1
 
+def mhd(strState, goalState='012345678'):
+    res = 0
+    for i in range(len(strState)):
+        res += abs(int(strState[i])//3 - int(goalState[i])//3) + abs(int(strState[i])%3 - int(goalState[i])%3)
+    return res
+
+# https://codereview.stackexchange.com/questions/110429/8-puzzle-using-a-and-manhattan-distance
+def ast(initState, goalState='012345678'):
+    h = []
+    heapq.heappush(h, [0, initState])
+    hNodes = set([initState])
+    visited = set()
+    # initalState depth 0
+    prev = {initState:[None, None, 0]}  # stores {node: [prev_node, move, depth]}
+    # Depth-First Search. Push onto the stack in reverse-UDLR order;
+    # popping off results in UDLR order.
+    moveMap = {0:'Up',
+                1:'Down',
+                2:'Left',
+                3:'Right'}
+    max_search_depth = 0
+    while h:
+        cur = (heapq.heappop(h))[1]
+        visited.add(cur)
+        hNodes.remove(cur)
+        if cur==goalState:
+            res = goalPath(prev, initState, goalState)
+            with open('./prev.json', 'w') as f:
+                json.dump(prev, f)
+            return res, prev[res[-1]][2], max_search_depth, len(visited)-1
+        neighbors = (State(cur).data)[cur]
+        for move, node in enumerate(neighbors):
+            if not node or node in visited:
+                continue
+            if node in hNodes:
+                for i, item in enumerate(h):
+                    if node == item[1] and item[0] > prev[cur][2]+1+mhd(node):
+                        h[i][0] = prev[cur][2]+1+mhd(node)
+                        prev[node]=[cur, moveMap[move], prev[cur][2]+1]
+                        max_search_depth = max(max_search_depth, prev[cur][2]+1)
+                        break
+            else:
+                hNodes.add(node)
+                heapq.heappush(h, [prev[cur][2]+1+mhd(node), node])
+                prev[node]=[cur, moveMap[move], prev[cur][2]+1]
+                max_search_depth = max(max_search_depth, prev[cur][2]+1)
+
+    retrun -1
+
 if __name__=='__main__':
     # method = sys.argv[1]
     # initState = sys.argv[2]
     # initState = initState.replace(',','')
 	# usage = resource.getrusage(resource.RUSAGE_SELF)
-    # method = 'bfs'
-    # initState = '125340678'
-    # initState = '6,1,8,4,0,2,7,3,5'.replace(',', '')
-    # print method
-    # print initState
 
-    method = 'dfs'
-    initState = '1,2,5,3,4,0,6,7,8'.replace(',', '')
+    # method = 'bfs'
+    # method = 'dfs'
+    method = 'ast'
+    # initState = '1,2,5,3,4,0,6,7,8'.replace(',', '')
+    initState = '6,1,8,4,0,2,7,3,5'.replace(',', '')
+    # initState = '8,6,4,2,1,3,5,7,0'.replace(',', '')
 
     start = time()
     fullState = State(initState)
@@ -168,8 +218,14 @@ if __name__=='__main__':
         res, search_depth, max_search_depth, nodes_expanded = dfs(initState)
         stop = time()
         running_time = stop - start
+        # max_ram_usage = getattr(usage, 'ru_maxrss')
         print('path_to_goal {}'.format(res))
-
+    if method == 'ast':
+        res, search_depth, max_search_depth, nodes_expanded = ast(initState)
+        stop = time()
+        running_time = stop - start
+        # max_ram_usage = getattr(usage, 'ru_maxrss')
+        print('path_to_goal {}'.format(res))
 
 # path_to_goal: the sequence of moves taken to reach the goal
 # cost_of_path: the number of moves taken to reach the goal
