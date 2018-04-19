@@ -13,7 +13,7 @@ def floodfill(screen, x, y, oldColor, newColor):
     floodfill(screen, x-1, y, oldColor, newColor)
     floodfill(screen, x+1, y, oldColor, newColor)
     return screen
-    
+
 screen = [[ 0.,  0.,  0.,  0.,  1.],
        [ 0.,  0.,  0.,  1.,  0.],
        [ 0.,  1.,  0.,  0.,  0.],
@@ -82,7 +82,7 @@ class Solution3(object):
         :rtype: List[List[int]]
         """
         nr, nc, oldColor= len(image), len(image[0]), image[sr][sc]
-        
+
         def fillRecursive(r, c):
             if r<0 or c<0 or r>=nr or c>=nc or image[r][c] != oldColor:
                 return image
@@ -96,6 +96,61 @@ class Solution3(object):
             fillRecursive(sr, sc)
         return image
 
+
+
+class Solution4(object):
+    """
+    standard DFS implementation with stack and visited.
+    """
+    def floodFill(self, image, sr, sc, newColor):
+        """
+        :type image: List[List[int]]
+        :type sr: int
+        :type sc: int
+        :type newColor: int
+        :rtype: List[List[int]]
+        """
+        R = len(image)
+        C = len(image[0])
+        oldColor = image[sr][sc]
+        if oldColor == newColor:
+            return image
+        else:
+            image[sr][sc] = newColor
+        stack = [(sr, sc)]
+        visited = []
+        while stack:
+            curr = stack.pop()
+            if 0 <= curr[0]-1 < R and 0 <= curr[1] < C \
+                and oldColor == image[curr[0]-1][curr[1]] \
+                and (curr[0]-1, curr[1]) not in visited \
+                and (curr[0]-1, curr[1]) not in stack:
+                image[curr[0]-1][curr[1]] = newColor
+                stack.append((curr[0]-1, curr[1]))
+            if 0 <= curr[0]+1 < R and 0 <= curr[1] < C \
+                and oldColor == image[curr[0]+1][curr[1]] \
+                and (curr[0]+1, curr[1]) not in visited \
+                and (curr[0]+1, curr[1]) not in stack:
+                image[curr[0]+1][curr[1]] = newColor
+                stack.append((curr[0]+1, curr[1]))
+            if 0 <= curr[0] < R and 0 <= curr[1]-1 < C \
+                and oldColor == image[curr[0]][curr[1]-1] \
+                and (curr[0], curr[1]-1) not in visited \
+                and (curr[0], curr[1]-1) not in stack:
+                image[curr[0]][curr[1]-1] = newColor
+                stack.append((curr[0], curr[1]-1))
+            if 0 <= curr[0] < R and 0 <= curr[1]+1 < C \
+                and oldColor == image[curr[0]][curr[1]+1] \
+                and (curr[0], curr[1]+1) not in visited \
+                and (curr[0], curr[1]+1) not in stack:
+                image[curr[0]][curr[1]+1] = newColor
+                stack.append((curr[0], curr[1]+1))
+            visited.append(curr)
+
+        return image
+
+
+
 if __name__=='__main__':
     mysol = Solution3()
     screen = [[ 0.,  0.,  0.,  0.,  1.],
@@ -103,6 +158,6 @@ if __name__=='__main__':
        [ 0.,  1.,  0.,  0.,  0.],
        [ 0.,  0.,  0.,  1.,  0.],
        [ 1.,  0.,  0.,  0.,  0.]]
-    screen = [[1,1,1],[1,1,0],[1,0,1]]       
-    screen = [[0,0,0],[0,1,1]]       
+    screen = [[1,1,1],[1,1,0],[1,0,1]]
+    screen = [[0,0,0],[0,1,1]]
     print mysol.floodFill(screen, 1, 1, 1)
