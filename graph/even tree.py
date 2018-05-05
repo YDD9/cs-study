@@ -22,7 +22,7 @@ def build_tree(t_from, t_to):
             t_[item].append(tree_from[index])
     return t_
 
-
+# recursive method 1
 def nb_nodes(t, node, nb=[0]):
     """
     The problem here is that you need the same value to be shared by all of the recursive calls,
@@ -30,42 +30,48 @@ def nb_nodes(t, node, nb=[0]):
     and do count[0] += 1 instead of count += 1.
     nb: list of two values, total nb of nodes including node itself
     """
+    if not node:
+        return nb[0]
     nb[0] += 1
     for subnode in t.get(node, ''):
         nb_nodes(t, subnode, nb)
-    return nb
+    return nb[0]
 
+def cuts_even(t, root, n=[0]):
+    if not root: return n[0]
+    # each node start from [0] to count, otherwise it starts for n of their parents
+    if nb_nodes(t, root, [0]) % 2 == 0:
+        n[0] += 1
+    # any non-leave node has the possibility to be cutted out
+    for subnode in t.get(root, ''):
+        cuts_even(t, subnode, n)
+    return n[0] # the total tree is even and that cut is ingored
 
-def nb_dfs(t, node):
+# stack method 2
+def nb_nodes2(t, node):
     stack =[node]
-    visited = []
     nb = 0
+    tmp = t.copy()
     while stack:
         cur = stack.pop()
         nb += 1
-        if node in t and node not in visited:
-            stack.extend(t[node])
-        visited.append(cur)
-
+        if cur in tmp:
+            stack.extend(tmp.pop(cur))
     return nb
 
+def cuts_even2(t, root):
+    stack = [root]
+    cut = 0
+    tmp = t.copy()
+    while stack:
+        cur = stack.pop()
+        if nb_nodes2(tmp, cur) % 2 == 0:
+            cut += 1
+        if cur in tmp:
+            stack.extend(tmp.pop(cur))
+    return cut-1
 
-def cuts_even(t):
-    cnt = 0
-    # any non-leave node has the possibility to be cutted out
-    for node in t:
-        if nb_nodes(t, node)[0] % 2 == 0:
-            cnt += 1
-    return cnt-1 # the total tree is even and that cut is ingored
 
-
-def cuts_even2(t):
-    cnt = 0
-    # any non-leave node has the possibility to be cutted out
-    for node in t:
-        if nb_dfs(t, node) % 2 == 0:
-            cnt += 1
-    return cnt-1 # the total tree is even and that cut is ingored
 
 if __name__=='__main__':
     tree_from = [2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -73,9 +79,14 @@ if __name__=='__main__':
     # t={8: [9, 10], 1: [2, 3, 6], 2: [5, 7], 3: [4], 6: [8]}
     mytree=build_tree(tree_from, tree_to)
     print(mytree)
+    print(nb_nodes(mytree, 9, [0]))
+    print(nb_nodes(mytree, 5, [0]))
+    print(nb_nodes(mytree, 4, [0]))
+    print(nb_nodes(mytree, 6, [0]))
+    print(nb_nodes(mytree, 1, [0]))
+    print(cuts_even(mytree, 1) - 1)
 
-    print(cuts_even(mytree))
-
-    t={8: [9, 10], 1: [2, 3, 6], 2: [5, 7], 3: [4], 6: [8], 4: [11, 12]}
-    print(nb_dfs(t, 1))
-    print(cuts_even2(t))
+    # methode 2
+    t={8: [9, 10], 1: [2, 3, 6], 2: [5, 7], 3: [4], 6: [8]}
+    print(nb_nodes2(t, 2))
+    print(cuts_even2(t, 1))

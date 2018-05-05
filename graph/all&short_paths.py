@@ -1,3 +1,5 @@
+# https://www.python.org/doc/essays/graphs/
+
 graph = {'A': ['B', 'C'],
             'B': ['C', 'D'],
             'C': ['D'],
@@ -22,7 +24,7 @@ print findPath(graph, 'A', 'D', [])
 
 
 def findAllPath(graph, s, e, path=[]):
-    path = path + [s]
+    path = path + [s]  # you can't use shorthand path += [s], result will only keep one path???
     if s not in graph:
         return None
     if s == e:
