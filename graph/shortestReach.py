@@ -1,47 +1,43 @@
 #!/bin/python
 
 # https://www.hackerrank.com/challenges/bfsshortreach/problem
-# import sys
-# from collections import defaultdict
-# My own
-# def bfs(n, m, edges, s):
-#     # Complete this function
-#     adjTree = defaultdict(set)
-#     for f, t in edges:
-#         adjTree[f].add(t)
-#         adjTree[t].add(f)
+import sys
 
-#     queue = [[s, 0]]
-#     visited = {}  # node: distance to s
-#     while queue:
-#         cur, dis = queue.pop(0)
-#         if cur not in adjTree:
-#             visited[cur] = -1
-#         else:
-#             if cur in visited:
-#                 visited[cur] = min(val, visited[cur])
-#             else:
-#                 visited[cur] = dis
-#                 for neighbor in adjTree[cur]:
-#                     tmp = 1
-#                     for i, sub_q in enumerate(queue):
-#                         if sub_q[0] == neighbor:
-#                             queue[i][1] = min(dis+6, sub_q[1])
-#                             tmp = 0
-#                             break
-#                     if neighbor not in visited and tmp:
-#                         queue.append([neighbor, dis+6])
+from collections import defaultdict
+from heapq import *
+def bfs(n, m, edges, s):
+    # Complete this function
+    adjList = defaultdict(set)
+    for f, t in edges:
+        adjList[f].add(t)
+        adjList[t].add(f)
 
-#     res = []
-#     for n in range(1, n+1):
-#         if n != s:
-#             res.append(visited.get(n, -1))
+    queue = [(0, s)]
+    # {node: distance to s}
+    visited = {}
+    while queue:
+        dis, cur = heappop(queue)
+        # ignore higher cost node in queue when it's popped again
+        if cur in visited: continue
+        visited[cur] = dis
 
-#     return res
+        for neighbor in adjList[cur]:
+            if neighbor not in visited:
+                # insert a neighbor with different cost in queue
+                # although the same neighbor presents already in queue
+                heappush(queue, (dis+6, neighbor))
+
+    res = []
+    # Hackerrank python2: xrange less memory
+    for n in xrange(1, n+1):
+        if n != s:
+            res.append(visited.get(n, -1))
+
+    return res
 
 # most simple and clear
 import sys
-def bfs(n, m, edges, s):
+def bfs2(n, m, edges, s):
     dictio = [set([]) for i in range(n)]
     Q = [s-1]
     for k,l in edges:
@@ -116,13 +112,13 @@ if __name__ == "__main__":
     #     result = bfs(n, m, edges, s)
     #     print " ".join(map(str, result))
 
-    n, s = 4, 4
+    n, s = 4, 1
     edges = [[1, 2], [1, 3]]
     # edges = [[1, 2], [1, 3], [2, 4], [3, 4], [4, 2], [4, 3]]
     # edges = [[1, 2], [1, 4], [2, 4], [3, 4], [4, 2], [4, 3]]
 
-    n, s = 6, 1
-    edges = [[1, 2], [1, 3], [2, 3], [2, 4], [4, 3], [3, 6], [6, 5]]
+    # n, s = 6, 1
+    # edges = [[1, 2], [1, 3], [2, 3], [2, 4], [4, 3], [3, 6], [6, 5]]
 
     # n, s = 3, 2
     # edges = [[2, 3]]
