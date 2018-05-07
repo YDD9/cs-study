@@ -1,5 +1,11 @@
 # Given an expression like ABC + CDE = EFG,
 # I was asked to check if certain values for each letter would solve the expression.
+# https://www.quora.com/What-is-an-algorithm-for-generating-all-possible-combinations-of-a-given-set-of-letters-e-g-a-b-c-d-e
+
+# https://gist.github.com/dougwt/1969743
+# recursive solution and one line solution
+# list(itertools.combinations([1, 2, 3], 2))
+
 
 def num():
     l = range(10)

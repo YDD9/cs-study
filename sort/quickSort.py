@@ -11,8 +11,9 @@ def quickSort(arr, le, ri):
 def partition(arr, l, r):
     med = l + (r - l) // 2
 
+    #  Never trigger code ???
     if l == r:
-        return
+        return med
 
     while l < r:
         if arr[l] > arr[med]:
@@ -30,5 +31,6 @@ def partition(arr, l, r):
 # arr = [4,2,3,1,5,9,0]
 arr = [5,2,4,3,6]
 # arr = [5,4,3,2,1]
+arr = [1]
 ri = len(arr) - 1
 print quickSort(arr, 0, ri)

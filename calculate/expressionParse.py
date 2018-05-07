@@ -43,6 +43,10 @@ def calc2(s):
         return a/float(b)
 
 
+# https://classes.cs.uoregon.edu/15W/cis210/assignments/Assnmt10-Symcalc.php
+# How to parse an expression to get input
+# http://interactivepython.org/runestone/static/pythonds/BasicDS/InfixPrefixandPostfixExpressions.html
+
 if __name__=='__main__':
     l = ['/', ['+', 2.0, 3.0], ['-', 4.0, 1.0]]
     print calc(l)
