@@ -1,5 +1,7 @@
 # http://www.geeksforgeeks.org/quick-sort/
 
+# O(nlogn)
+# https://softwareengineering.stackexchange.com/questions/297160/why-is-mergesort-olog-n
 def quickSort(arr, le, ri):
     if le < ri:
         m = partition(arr, le, ri)

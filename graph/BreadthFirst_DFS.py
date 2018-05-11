@@ -25,7 +25,30 @@ class Graph():
                     visited[point] = True
                     queue.append(point)
             result.append(s)
-        print result
+        # print result
+
+    def BFS2(self, s):
+        visited = [False] * len(self.graph)
+        queue = deque()
+        result = deque()
+
+        # starting from point s
+        queue.append(s)
+        # visited[s] = True
+
+        while queue:
+            s = queue.popleft() # dequeue the first in queue
+            print s,
+            visited[s] = True
+
+            for point in self.graph[s]:
+                # if not visited[point]:
+                if not visited[point] and point not in queue:
+                    # visited[point] = True
+                    queue.append(point)
+            result.append(s)
+        # print result
+
 
     def DFS(self, s):
         visited = [False] * len(self.graph)
@@ -38,14 +61,14 @@ class Graph():
 
         while stack:
             s = stack.pop()  # output the top of the stack, last appended
-            print s, 
+            print s,
 
             for point in self.graph[s]:
                 if not visited[point]:
                     stack.append(point)
                     visited[point] = True
             result.append(s)
-        print result
+        # print result
 
 
 # Driver code
@@ -59,9 +82,9 @@ g.addEdge(2, 0)
 g.addEdge(2, 1)
 g.addEdge(2, 3)
 g.addEdge(3, 3)
- 
+
 print "Following is Breadth First Traversal (starting from vertex 2)"
-g.BFS(2)
+g.BFS2(2) # 2 0 1 3
 print '\n====================\n'
 
 h = Graph()
